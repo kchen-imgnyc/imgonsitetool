@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onsite Report Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="\templates\js\index.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="\templates\css\index.css">
+</head>
+<body>
+
+    <div class="excelcontainer">
+
+        <div>
+        <label for="excel-file-input" style="cursor: pointer; background-color: #217346; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+            Load All Items Excel File
+        </label>
+
+        <input type="file" 
+            id="excel-file-input" 
+            accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+            style="display: none;">
+
+        <p>
+            <strong>Selected File:</strong> 
+            <span id="file-name-display">No file selected</span>
+        </p>
+        </div>
+
+
+        <div>
+            <label for="excel-file-input-outstanding" style="cursor: pointer; background-color: #217346; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+            Load Outsanding Report Excel File
+            </label>
+
+            <input type="file" 
+            id="excel-file-input-outstanding" 
+            accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+            style="display: none;">
+
+            <p>
+                <strong>Selected File:</strong> 
+                <span id="file-name-display-asset">No file selected</span>
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+        <div>
+            <label for="process_files" style="cursor: pointer; background-color: #4138eb; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+            Generate Report
+            </label>
+            
+            <button id="process_files" style="display: none;"></button>
+        </div>
+
+    
+
+    <h3>Output (JSON):</h3>
+    <pre id="output"></pre>
+
+
+</body>
+</html>
