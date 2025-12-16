@@ -164,7 +164,7 @@ generateReportButton.addEventListener("click", async function() {
             width: 10,
             style: { 
                 alignment: { horizontal: 'center' },
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -173,7 +173,7 @@ generateReportButton.addEventListener("click", async function() {
             width: 8,
             style: { 
                 alignment: { horizontal: 'center' },
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -182,7 +182,7 @@ generateReportButton.addEventListener("click", async function() {
             width: 25,
             style: { 
                 alignment: { horizontal: 'center' },
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -192,7 +192,7 @@ generateReportButton.addEventListener("click", async function() {
             style: { 
                 numFmt: '$#,##0.00', 
                 alignment: { horizontal: 'center' }, 
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -202,7 +202,7 @@ generateReportButton.addEventListener("click", async function() {
             style: { 
                 numFmt: '$#,##0.00',
                 alignment: { horizontal: 'center' }, 
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -212,7 +212,7 @@ generateReportButton.addEventListener("click", async function() {
             style: { 
                 numFmt: '$#,##0.00',
                 alignment: { horizontal: 'center' }, 
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -222,7 +222,7 @@ generateReportButton.addEventListener("click", async function() {
             style: { 
                 numFmt: '$#,##0.00',
                 alignment: { horizontal: 'center' }, 
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -232,7 +232,7 @@ generateReportButton.addEventListener("click", async function() {
             style: { 
                 numFmt: '$#,##0.00',
                 alignment: { horizontal: 'center' }, 
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -241,7 +241,7 @@ generateReportButton.addEventListener("click", async function() {
             width: 40,
             style: { 
                 alignment: { horizontal: 'center' },
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -250,7 +250,7 @@ generateReportButton.addEventListener("click", async function() {
             width: 40,
             style: { 
                 alignment: { horizontal: 'center' },
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -259,7 +259,7 @@ generateReportButton.addEventListener("click", async function() {
             width: 20,
             style: { 
                 alignment: { horizontal: 'center' },
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         },
         { 
@@ -268,7 +268,7 @@ generateReportButton.addEventListener("click", async function() {
             width: 25,
             style: { 
                 alignment: { horizontal: 'center' },
-                font: { size: 12 } // Set font size
+                font: { size: 10, name: 'Montserrat' } // Font updated
             } 
         }
     ];
@@ -368,6 +368,75 @@ generateReportButton.addEventListener("click", async function() {
             }
         }
     }
+
+    worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 1
+    worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 2
+    row_num = row_num + 2    
+
+    //`B${row_num}*D${row_num}`
+    ThirdLastRow=[
+                "",
+                "",
+                "", 
+                "SubTotal:", 
+                `SUM(E1:E${row_num-1})`, 
+                "", 
+                `SUM(G1:G${row_num-1})`, 
+                `SUM(H1:H${row_num-1})`, 
+                "", 
+                "", 
+                "", 
+                ""
+    ];
+
+    newRow = worksheet.addRow(ThirdLastRow);
+    newRow.getCell(5).value = { formula: `SUM(E1:E${row_num-1})` }
+    newRow.getCell(7).value ={ formula: `SUM(G1:G${row_num-1})` }
+    newRow.getCell(8).value ={ formula: `SUM(H1:H${row_num-1})` }
+
+    row_num =row_num +1
+
+    SecondLastRow=[
+                "",
+                "",
+                "", 
+                "NY Sales Tax:", 
+                `E${row_num-1}*0.008875`, 
+                "", 
+                `G${row_num-1}*0.008875`, 
+                `H${row_num-1}*0.008875`, 
+                "", 
+                "", 
+                "", 
+                ""
+    ];
+
+    newRow = worksheet.addRow(SecondLastRow);
+    newRow.getCell(5).value = { formula: `E${row_num-1}*0.008875` }
+    newRow.getCell(7).value ={ formula: `G${row_num-1}*0.008875` }
+    newRow.getCell(8).value ={ formula: `H${row_num-1}*0.008875` }
+    row_num =row_num +1
+
+    LastRow=[
+                "",
+                "",
+                "",
+                "Total:", 
+                `E${row_num-2}+E${row_num-1}`, 
+                "",
+                `G${row_num-2}+G${row_num-1}`, 
+                `H${row_num-2}+H${row_num-1}`, 
+                "", 
+                "", 
+                "", 
+                ""
+    ];
+    newRow = worksheet.addRow(LastRow);
+    newRow.getCell(5).value = { formula: `E${row_num-2}+E${row_num-1}` }
+    newRow.getCell(7).value ={ formula: `G${row_num-2}+G${row_num-1}` }
+    newRow.getCell(8).value ={ formula: `H${row_num-2}+H${row_num-1}` }
+
+
 
 
     try {
