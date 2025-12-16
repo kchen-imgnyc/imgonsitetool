@@ -37,7 +37,6 @@ excelInputBtn.addEventListener(("change"),function(){
             unitCost=item["UnitCost"]
             manufacturer=item["Manufacturer"]
 
-            
             if (addedCodes.indexOf(icode) == -1 && icode != undefined){
                 allData.push([icode,discription,unitCost,manufacturer])
                 addedCodes.push(icode)
@@ -52,7 +51,6 @@ excelInputBtn.addEventListener(("change"),function(){
         }
 
         console.log(allData)
-
 
         };
 
@@ -130,95 +128,267 @@ outstandingExcelBtn.addEventListener(("change"),function(){
 
 });
 
+
+let icodesRan=[]
+
 const generateReportButton =document.getElementById("process_files")
 
-generateReportButton.addEventListener("click",function(){
-
-    if (allData.length == 0){
-        return alert("Please Upload All Items Excel Sheet")
+generateReportButton.addEventListener("click", async function() {
+    // 1. Initial Checks
+    if (allData.length == 0) {
+        return alert("Please Upload All Items Excel Sheet");
     }
 
-    if (outstandingData.size == 0){
-        return alert("Please Upload Outstanding Excel")
+    if (outstandingData.size == 0) {
+        return alert("Please Upload Outstanding Excel");
     }
 
-    filename="onsite.xlsx"
+    const filename = "onsite.xlsx";
 
-    header=["ICODE","QTY","ROOM + ITEM","ESTIMATE","ESTIMATE TOTAL","COST","TOTAL","PRICE","VENDOR + ITEM NAME","ITEM DESCRIPTION","IMAGE","REMOVAL NOTES"]
-    blank_space=["","","","","","","","","","","",""]
-    dataList=[header]
+    // 2. Setup Workbook and Worksheet
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet1');
 
-    for(let i=0;i<allData.length;i++){
-        row_num = i + 2
+    // Define Header (used for columns and the first row)
+    const header = [
+        "ICODE", "QTY", "ROOM + ITEM", "ESTIMATE", "ESTIMATE TOTAL", "COST", 
+        "TOTAL", "PRICE", "VENDOR + ITEM NAME", "ITEM DESCRIPTION", "IMAGE", 
+        "REMOVAL NOTES"
+    ];
 
-        row=allData[i]
-        icode=row[0]
-        discription=row[1]
-        unitCost=row[2]
-        manufacturer=[3]
-
-        extraData=outstandingData.get(icode)
-        category=""
-        imageID=""
-        qty=0
-
-        estimateFormula=`=B${row_num}*D${row_num}`
-        totalFormula=`=B${row_num}*F${row_num}`
-        imageLink="=IMAGE(\"https://imgnyc.rentalworks.cloud/api/v1/appimage/getimage?appimageid="+ String(imageID) +"&thumbnail=false\",4," +String(150)+","+ String(150)+")"
-
-
-        if (extraData != undefined){
-            if (manufacturer == "IMG"){
-                manufacturer = "IMG ART LOFT:"
-            }
-            else if (manufacturer == "CUSTOM IMG"){
-                manufacturer= "IMG CUSTOM"
-            }
-            else if ( 0 < manufacturer.length <=3){
-                 manufacturer="IMG HOME EXCLUSIVE:"
-            }
-            category=extraData["Category"]
-            imageID=extraData["ImageId"]
-            qty=extraData["Quantity"]
+    // Define columns for width and formatting (optional but good practice)
+    worksheet.columns = [
+        { 
+            header: header[0], 
+            key: 'icode', 
+            width: 10,
+            style: { 
+                alignment: { horizontal: 'center' },
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[1], 
+            key: 'qty', 
+            width: 8,
+            style: { 
+                alignment: { horizontal: 'center' },
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[2], 
+            key: 'room', 
+            width: 25,
+            style: { 
+                alignment: { horizontal: 'center' },
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[3], 
+            key: 'estimate', 
+            width: 15, 
+            style: { 
+                numFmt: '$#,##0.00', 
+                alignment: { horizontal: 'center' }, 
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[4], 
+            key: 'est_total', 
+            width: 18, 
+            style: { 
+                numFmt: '$#,##0.00',
+                alignment: { horizontal: 'center' }, 
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[5], 
+            key: 'cost', 
+            width: 15, 
+            style: { 
+                numFmt: '$#,##0.00',
+                alignment: { horizontal: 'center' }, 
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[6], 
+            key: 'total', 
+            width: 18, 
+            style: { 
+                numFmt: '$#,##0.00',
+                alignment: { horizontal: 'center' }, 
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[7], 
+            key: 'price', 
+            width: 15, 
+            style: { 
+                numFmt: '$#,##0.00',
+                alignment: { horizontal: 'center' }, 
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[8], 
+            key: 'vendor_item', 
+            width: 40,
+            style: { 
+                alignment: { horizontal: 'center' },
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[9], 
+            key: 'description', 
+            width: 40,
+            style: { 
+                alignment: { horizontal: 'center' },
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[10], 
+            key: 'image', 
+            width: 20,
+            style: { 
+                alignment: { horizontal: 'center' },
+                font: { size: 12 } // Set font size
+            } 
+        },
+        { 
+            header: header[11], 
+            key: 'notes', 
+            width: 25,
+            style: { 
+                alignment: { horizontal: 'center' },
+                font: { size: 12 } // Set font size
+            } 
         }
-        newRow=[icode,qty,category,unitCost,estimateFormula,unitCost,totalFormula,unitCost,manufacturer + " - " + discription,imageLink,""]
+    ];
+    
 
-        if (icode == undefined){
-            dataList.push(blank_space)
-            dataList.push(blank_space)
-            newRow[1]=""
-            newRow[2]=discription
-            newRow[3]=""
-            newRow[4]=""
-            newRow[5]=""
-            newRow[6]=""
-            newRow[7] = ""
-            newRow[8]=""
-            newRow[10]=""
+
+    let row_num = 2; 
+    for (let i = 0; i < allData.length; i++) {
+
+        let row = allData[i];
+        let icode = row[0];
+        let description = row[1];
+        let unitCost = row[2];
+        let manufacturer = row[3];
+
+        let extraData = outstandingData.get(icode);
+        let category = "";
+        let imageID = "";
+        let qty = 0;
+
+        if (icode != undefined && extraData == undefined){
+            continue
         }
 
-        if (imageID == undefined || imageID == ""){
-            newRow[10] = ""
+        if(icode !== undefined && icodesRan.indexOf(icode) !== -1){
+            continue
         }
 
-        dataList.push(newRow)
 
+        let estimateFormula = `B${row_num}*D${row_num}`;
+        let totalFormula = `B${row_num}*F${row_num}`;
+
+        let imageLink = '';
+
+        if (manufacturer != undefined){
+            if (manufacturer == "IMG") {
+                manufacturer = "IMG ART LOFT:";
+            } else if (manufacturer == "CUSTOM IMG") {
+                manufacturer = "IMG CUSTOM";
+            } else if ( manufacturer.length > 0 && manufacturer.length <= 3) {
+                manufacturer = "IMG HOME EXCLUSIVE:";
+            }
+        }
+
+        if (extraData != undefined) {
+            category = extraData["category"];
+            imageID = extraData["imageID"];
+            qty = extraData["qty"];
+        }
+        
+        if (imageID != undefined) {
+            imageLink = `IMAGE("https://imgnyc.rentalworks.cloud/api/v1/appimage/getimage?appimageid=${String(imageID)}&thumbnail=false",4,150,150)`;
+        }
+
+        // The array format for adding a row
+        let newRowValues = [
+            icode, qty, category, unitCost, estimateFormula, unitCost, 
+            totalFormula, unitCost, `${manufacturer} - ${description}`, "", // description is column J (index 9)
+            imageLink, "" // image is column K (index 10), removal notes is L (index 11)
+        ];
+
+
+        if (icode == undefined) {
+            worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 1
+            worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 2
+            newRowValues = [
+                "", "", description, "", "", "", 
+                "", "", "", "", 
+                "", ""
+            ];
+            row_num = row_num + 2
+        }
+
+
+        // Handle missing ImageID
+        if (imageID == undefined || imageID == "") {
+            newRowValues[10] = "";
+        }
+        
+        // Add the row
+        let newRow = worksheet.addRow(newRowValues);
+        icodesRan.push(icode)
+        row_num = row_num + 1
+
+        // Set formulas in ExcelJS *after* adding the row, using the cell object
+        if (icode != undefined) {
+            // Apply formula to ESTIMATE TOTAL (Column E, index 4)
+            newRow.getCell(5).value = { formula: estimateFormula }; 
+            
+            // Apply formula to TOTAL (Column G, index 6)
+            newRow.getCell(7).value = { formula: totalFormula }; 
+            
+            // Apply image formula to IMAGE (Column K, index 10)
+            if (imageID != undefined) {
+               newRow.getCell(11).value = { formula: imageLink };
+               newRow.height = 112.5; // 150px is approx 112.5 points in Excel
+            }
+        }
     }
 
 
+    try {
+        // Write the workbook to a buffer (Async operation)
+        let buffer = await workbook.xlsx.writeBuffer(); 
+        
+        // Convert the buffer to a Blob object
+        let blob = new Blob([buffer], { 
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+        });
+        
+        // Use FileSaver.js (saveAs) to trigger the download
+        // Ensure FileSaver.js is loaded in your HTML
+        saveAs(blob, filename);
 
-    // Create a new workbook
-    const wb = XLSX.utils.book_new();
-    // Add a worksheet with the data
-    const ws = XLSX.utils.aoa_to_sheet(dataList); // Use aoa_to_sheet for array of arrays
-    // Append the worksheet to the workbook
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-    // Write the file and trigger a client-side download
-    XLSX.writeFile(wb, filename || 'export.xlsx');
+        console.log("Excel file generated and downloaded successfully.");
 
-
-
-
+    } catch (error) {
+        console.error("Error generating or saving Excel file:", error);
+        alert("Failed to generate Excel report.");
+    }
 });
 
 
