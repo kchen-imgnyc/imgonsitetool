@@ -6,3 +6,18 @@
 table, th, td {
     border:1px solid black;
 }
+
+.radio-group {
+  display: flex;
+  flex-direction: column; /* Stacks the children vertically */
+  gap: 10px; /* Adds space between the options */
+}
+
+.radio-option {
+  display: flex;
+  align-items: center; /* Vertically aligns the radio button and its text */
+}
+
+.radio-option input {
+  margin-right: 8px; /* Adds a small space between the button and the label text */
+}

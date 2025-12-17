@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Onsite Report Generator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
@@ -52,14 +53,29 @@
 
     </div>
 
+    <div>Location:</div>
+    <div class="radio-group">
 
-        <div>
-            <label for="process_files" style="cursor: pointer; background-color: #4138eb; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
-            Generate Report
-            </label>
-            
-            <button id="process_files" style="display: none;"></button>
-        </div>
+    <div class="radio-option">
+        <input type="radio" id="option1" name="choice" value="NYC" checked>
+        <label for="option1">NYC</label>
+    </div>
+    <div class="radio-option">
+        <input type="radio" id="option2" name="choice" value="FL">
+        <label for="option2">FL</label>
+    </div>
+    
+    </div>
+
+    <br>
+
+    <div>
+        <label for="process_files" style="cursor: pointer; background-color: #4138eb; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+        Generate Report
+        </label>
+        
+        <button id="process_files" style="display: none;"></button>
+    </div>
 
     
     <div style="display:none;">

@@ -1,5 +1,6 @@
-let outstandingData=new Map()
-let allData=[]
+let outstandingData=new Map();
+let allData=[];
+let locationChoice="NYC";
 
 document.addEventListener("DOMContentLoaded", function() {
  
@@ -135,6 +136,7 @@ const generateReportButton =document.getElementById("process_files")
 
 generateReportButton.addEventListener("click", async function() {
     // 1. Initial Checks
+    icodesRan=[]
     if (allData.length == 0) {
         return alert("Please Upload All Items Excel Sheet");
     }
@@ -374,69 +376,142 @@ generateReportButton.addEventListener("click", async function() {
     row_num = row_num + 2    
 
     //`B${row_num}*D${row_num}`
-    ThirdLastRow=[
-                "",
-                "",
-                "", 
-                "SubTotal:", 
-                `SUM(E1:E${row_num-1})`, 
-                "", 
-                `SUM(G1:G${row_num-1})`, 
-                `SUM(H1:H${row_num-1})`, 
-                "", 
-                "", 
-                "", 
-                ""
-    ];
 
-    newRow = worksheet.addRow(ThirdLastRow);
-    newRow.getCell(5).value = { formula: `SUM(E1:E${row_num-1})` }
-    newRow.getCell(7).value ={ formula: `SUM(G1:G${row_num-1})` }
-    newRow.getCell(8).value ={ formula: `SUM(H1:H${row_num-1})` }
+    if (locationChoice === "NYC"){
+        ThirdLastRow=[
+                    "",
+                    "",
+                    "", 
+                    "SubTotal:", 
+                    `SUM(E1:E${row_num-1})`, 
+                    "", 
+                    `SUM(G1:G${row_num-1})`, 
+                    `SUM(H1:H${row_num-1})`, 
+                    "", 
+                    "", 
+                    "", 
+                    ""
+        ];
 
-    row_num =row_num +1
+        newRow = worksheet.addRow(ThirdLastRow);
+        newRow.getCell(5).value = { formula: `SUM(E1:E${row_num-1})` }
+        newRow.getCell(7).value ={ formula: `SUM(G1:G${row_num-1})` }
+        newRow.getCell(8).value ={ formula: `SUM(H1:H${row_num-1})` }
 
-    SecondLastRow=[
-                "",
-                "",
-                "", 
-                "NY Sales Tax:", 
-                `E${row_num-1}*0.008875`, 
-                "", 
-                `G${row_num-1}*0.008875`, 
-                `H${row_num-1}*0.008875`, 
-                "", 
-                "", 
-                "", 
-                ""
-    ];
+        row_num =row_num +1
 
-    newRow = worksheet.addRow(SecondLastRow);
-    newRow.getCell(5).value = { formula: `E${row_num-1}*0.008875` }
-    newRow.getCell(7).value ={ formula: `G${row_num-1}*0.008875` }
-    newRow.getCell(8).value ={ formula: `H${row_num-1}*0.008875` }
-    row_num =row_num +1
+        SecondLastRow=[
+                    "",
+                    "",
+                    "", 
+                    "NY Sales Tax:", 
+                    `E${row_num-1}*0.008875`, 
+                    "", 
+                    `G${row_num-1}*0.008875`, 
+                    `H${row_num-1}*0.008875`, 
+                    "", 
+                    "", 
+                    "", 
+                    ""
+        ];
 
-    LastRow=[
-                "",
-                "",
-                "",
-                "Total:", 
-                `E${row_num-2}+E${row_num-1}`, 
-                "",
-                `G${row_num-2}+G${row_num-1}`, 
-                `H${row_num-2}+H${row_num-1}`, 
-                "", 
-                "", 
-                "", 
-                ""
-    ];
-    newRow = worksheet.addRow(LastRow);
-    newRow.getCell(5).value = { formula: `E${row_num-2}+E${row_num-1}` }
-    newRow.getCell(7).value ={ formula: `G${row_num-2}+G${row_num-1}` }
-    newRow.getCell(8).value ={ formula: `H${row_num-2}+H${row_num-1}` }
+        newRow = worksheet.addRow(SecondLastRow);
+        newRow.getCell(5).value = { formula: `E${row_num-1}*0.008875` }
+        newRow.getCell(7).value ={ formula: `G${row_num-1}*0.008875` }
+        newRow.getCell(8).value ={ formula: `H${row_num-1}*0.008875` }
+        row_num =row_num +1
+
+        LastRow=[
+                    "",
+                    "",
+                    "",
+                    "Total:", 
+                    `E${row_num-2}+E${row_num-1}`, 
+                    "",
+                    `G${row_num-2}+G${row_num-1}`, 
+                    `H${row_num-2}+H${row_num-1}`, 
+                    "", 
+                    "", 
+                    "", 
+                    ""
+        ];
+        newRow = worksheet.addRow(LastRow);
+        newRow.getCell(5).value = { formula: `E${row_num-2}+E${row_num-1}` }
+        newRow.getCell(7).value ={ formula: `G${row_num-2}+G${row_num-1}` }
+        newRow.getCell(8).value ={ formula: `H${row_num-2}+H${row_num-1}` }
 
 
+    
+    }
+    else if(locationChoice === "FL"){
+         ThirdLastRow=[
+                    "",
+                    "",
+                    "", 
+                    "SubTotal:", 
+                    `SUM(E1:E${row_num-1})`, 
+                    "", 
+                    `SUM(G1:G${row_num-1})`, 
+                    `SUM(H1:H${row_num-1})`, 
+                    "", 
+                    "", 
+                    "", 
+                    ""
+        ];
+
+        newRow = worksheet.addRow(ThirdLastRow);
+        newRow.getCell(5).value = { formula: `SUM(E1:E${row_num-1})` }
+        newRow.getCell(7).value ={ formula: `SUM(G1:G${row_num-1})` }
+        newRow.getCell(8).value ={ formula: `SUM(H1:H${row_num-1})` }
+
+        row_num =row_num +1
+
+        SecondLastRow=[
+                    "",
+                    "",
+                    "", 
+                    "FL Sales Tax:", 
+                    `E${row_num-1}*0.07`, 
+                    "", 
+                    `G${row_num-1}*0.07`, 
+                    `H${row_num-1}*0.07`, 
+                    "", 
+                    "", 
+                    "", 
+                    ""
+        ];
+
+        newRow = worksheet.addRow(SecondLastRow);
+        newRow.getCell(5).value = { formula: `E${row_num-1}*0.07` }
+        newRow.getCell(7).value ={ formula: `G${row_num-1}*0.07` }
+        newRow.getCell(8).value ={ formula: `H${row_num-1}*0.07` }
+        row_num =row_num +1
+
+        LastRow=[
+                    "",
+                    "",
+                    "",
+                    "Total:", 
+                    `E${row_num-2}+E${row_num-1}`, 
+                    "",
+                    `G${row_num-2}+G${row_num-1}`, 
+                    `H${row_num-2}+H${row_num-1}`, 
+                    "", 
+                    "", 
+                    "", 
+                    ""
+        ];
+        newRow = worksheet.addRow(LastRow);
+        newRow.getCell(5).value = { formula: `E${row_num-2}+E${row_num-1}` }
+        newRow.getCell(7).value ={ formula: `G${row_num-2}+G${row_num-1}` }
+        newRow.getCell(8).value ={ formula: `H${row_num-2}+H${row_num-1}` }
+
+
+
+
+
+    }
+    
 
 
     try {
@@ -460,6 +535,11 @@ generateReportButton.addEventListener("click", async function() {
     }
 });
 
+
+$("input[name='choice']").on("click",function(){
+    locationChoice=this.value
+    console.log(locationChoice)
+});
 
 
 });
