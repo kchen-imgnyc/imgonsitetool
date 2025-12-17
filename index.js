@@ -284,7 +284,7 @@ generateReportButton.addEventListener("click", async function() {
 
         let row = allData[i];
         let icode = row[0];
-        let description = row[1];
+        let description = row[1].toUpperCase();
         let unitCost = row[2];
         let manufacturer = row[3];
 
