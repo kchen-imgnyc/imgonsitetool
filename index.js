@@ -153,131 +153,67 @@ generateReportButton.addEventListener("click", async function() {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet1');
 
-    // Define Header (used for columns and the first row)
     const header = [
-        "ICODE", "QTY", "ROOM + ITEM", "ESTIMATE", "ESTIMATE TOTAL", "COST", 
-        "TOTAL", "PRICE", "VENDOR + ITEM NAME", "ITEM DESCRIPTION", "IMAGE", 
-        "REMOVAL NOTES"
+    "ICODE", "IMAGE", "QTY", "ROOM + ITEM", "ESTIMATE", "ESTIMATE TOTAL", 
+    "COST", "TOTAL", "PRICE", "VENDOR + ITEM NAME", "ITEM DESCRIPTION", 
+    "REMOVAL NOTES"
     ];
 
-    // Define columns for width and formatting (optional but good practice)
     worksheet.columns = [
-        { 
-            header: header[0], 
-            key: 'icode', 
-            width: 10,
-            style: { 
-                alignment: { horizontal: 'center' },
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
-        },
-        { 
-            header: header[1], 
-            key: 'qty', 
-            width: 8,
-            style: { 
-                alignment: { horizontal: 'center' },
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
-        },
-        { 
-            header: header[2], 
-            key: 'room', 
-            width: 25,
-            style: { 
-                alignment: { horizontal: 'center' },
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
-        },
-        { 
-            header: header[3], 
-            key: 'estimate', 
-            width: 15, 
-            style: { 
-                numFmt: '$#,##0.00', 
-                alignment: { horizontal: 'center' }, 
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
-        },
+        { header: header[0], key: 'icode', width: 12 },
+        { header: header[1], key: 'image', width: 20 },
+        { header: header[2], key: 'qty', width: 8 },
+        { header: header[3], key: 'room_item', width: 30 },
         { 
             header: header[4], 
-            key: 'est_total', 
-            width: 18, 
-            style: { 
-                numFmt: '$#,##0.00',
-                alignment: { horizontal: 'center' }, 
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
+            key: 'estimate', 
+            width: 15, 
+            style: { numFmt: '$#,##0.00' } 
         },
         { 
             header: header[5], 
-            key: 'cost', 
-            width: 15, 
-            style: { 
-                numFmt: '$#,##0.00',
-                alignment: { horizontal: 'center' }, 
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
+            key: 'estimate_total', 
+            width: 18, 
+            style: { numFmt: '$#,##0.00' } 
         },
         { 
             header: header[6], 
-            key: 'total', 
-            width: 18, 
-            style: { 
-                numFmt: '$#,##0.00',
-                alignment: { horizontal: 'center' }, 
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
+            key: 'cost', 
+            width: 15, 
+            style: { numFmt: '$#,##0.00' } 
         },
         { 
             header: header[7], 
-            key: 'price', 
-            width: 15, 
-            style: { 
-                numFmt: '$#,##0.00',
-                alignment: { horizontal: 'center' }, 
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
+            key: 'total', 
+            width: 18, 
+            style: { numFmt: '$#,##0.00' } 
         },
         { 
             header: header[8], 
-            key: 'vendor_item', 
-            width: 40,
-            style: { 
-                alignment: { horizontal: 'center' },
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
+            key: 'price', 
+            width: 15, 
+            style: { numFmt: '$#,##0.00' } 
         },
-        { 
-            header: header[9], 
-            key: 'description', 
-            width: 40,
-            style: { 
-                alignment: { horizontal: 'center' },
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
-        },
-        { 
-            header: header[10], 
-            key: 'image', 
-            width: 20,
-            style: { 
-                alignment: { horizontal: 'center' },
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
-        },
-        { 
-            header: header[11], 
-            key: 'notes', 
-            width: 25,
-            style: { 
-                alignment: { horizontal: 'center' },
-                font: { size: 10, name: 'Montserrat' } // Font updated
-            } 
-        }
+        { header: header[9], key: 'vendor_item', width: 35 },
+        { header: header[10], key: 'description', width: 40 },
+        { header: header[11], key: 'notes', width: 30 }
     ];
-    
 
+    // Apply universal styling (Font & Alignment) to all columns
+    worksheet.columns.forEach(col => {
+        col.style = col.style || {};
+        col.style.font = { size: 10, name: 'Montserrat' };
+        col.style.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+    });
+    
+    worksheet.getRow(1).font = {
+    name: 'Montserrat',
+    size: 10,
+    bold: true,
+    };
+    
+    worksheet.getRow(1).height = 37.5;
+    worksheet.getRow(1).alignment = { horizontal: 'center', vertical: 'middle'};
 
     let row_num = 2; 
     for (let i = 0; i < allData.length; i++) {
@@ -302,12 +238,13 @@ generateReportButton.addEventListener("click", async function() {
         }
 
 
-        let estimateFormula = `B${row_num}*D${row_num}`;
-        let totalFormula = `B${row_num}*F${row_num}`;
+        let estimateFormula = `C${row_num}*E${row_num}`;
+        let totalFormula = `C${row_num}*G${row_num}`;
 
         let imageLink = '';
 
         if (manufacturer != undefined){
+            manufacturer=manufacturer.toUpperCase()
             if (manufacturer == "IMG") {
                 manufacturer = "IMG ART LOFT:";
             } else if (manufacturer == "CUSTOM IMG") {
@@ -315,6 +252,9 @@ generateReportButton.addEventListener("click", async function() {
             } else if ( manufacturer.length > 0 && manufacturer.length <= 3) {
                 manufacturer = "IMG HOME EXCLUSIVE:";
             }
+        }
+        else{
+            manufacturer = "UNKNOWN"
         }
 
         if (extraData != undefined) {
@@ -327,11 +267,11 @@ generateReportButton.addEventListener("click", async function() {
             imageLink = `IMAGE("https://imgnyc.rentalworks.cloud/api/v1/appimage/getimage?appimageid=${String(imageID)}&thumbnail=false",4,150,150)`;
         }
 
-        // The array format for adding a row
+
         let newRowValues = [
-            icode, qty, category, unitCost, estimateFormula, unitCost, 
-            totalFormula, unitCost, `${manufacturer} - ${description}`, "", // description is column J (index 9)
-            imageLink, "" // image is column K (index 10), removal notes is L (index 11)
+            icode,imageLink, qty, category, unitCost, estimateFormula, unitCost, 
+            totalFormula, unitCost, `${manufacturer} - ${description}`, "", 
+            "" 
         ];
 
 
@@ -339,35 +279,45 @@ generateReportButton.addEventListener("click", async function() {
             worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 1
             worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 2
             newRowValues = [
-                "", "", description, "", "", "", 
+                "","", "", description, "", "", "", 
                 "", "", "", "", 
-                "", ""
+                ""
             ];
+            worksheet.getRow(row_num+1).height=10
+            worksheet.getRow(row_num+2).height=10
+
             row_num = row_num + 2
         }
 
 
         // Handle missing ImageID
         if (imageID == undefined || imageID == "") {
-            newRowValues[10] = "";
+            newRowValues[1] = "";
         }
         
         // Add the row
         let newRow = worksheet.addRow(newRowValues);
+
+        if (icode == undefined){
+            newRow.font={
+            bold: true,
+            }
+        }
+
         icodesRan.push(icode)
         row_num = row_num + 1
 
         // Set formulas in ExcelJS *after* adding the row, using the cell object
         if (icode != undefined) {
             // Apply formula to ESTIMATE TOTAL (Column E, index 4)
-            newRow.getCell(5).value = { formula: estimateFormula }; 
+            newRow.getCell(6).value = { formula: estimateFormula }; 
             
             // Apply formula to TOTAL (Column G, index 6)
-            newRow.getCell(7).value = { formula: totalFormula }; 
+            newRow.getCell(8).value = { formula: totalFormula }; 
             
             // Apply image formula to IMAGE (Column K, index 10)
             if (imageID != undefined) {
-               newRow.getCell(11).value = { formula: imageLink };
+               newRow.getCell(2).value = { formula: imageLink };
                newRow.height = 112.5; // 150px is approx 112.5 points in Excel
             }
         }
@@ -382,64 +332,67 @@ generateReportButton.addEventListener("click", async function() {
         ThirdLastRow=[
                     "",
                     "",
+                    "",
                     "", 
                     "SubTotal:", 
-                    `SUM(E1:E${row_num-1})`, 
+                    ``, 
                     "", 
-                    `SUM(G1:G${row_num-1})`, 
-                    `SUM(H1:H${row_num-1})`, 
+                    ``, 
+                    ``, 
                     "", 
                     "", 
                     "", 
-                    ""
+                    
         ];
 
         newRow = worksheet.addRow(ThirdLastRow);
-        newRow.getCell(5).value = { formula: `SUM(E1:E${row_num-1})` }
-        newRow.getCell(7).value ={ formula: `SUM(G1:G${row_num-1})` }
+        newRow.getCell(6).value = { formula: `SUM(F1:F${row_num-1})` }
         newRow.getCell(8).value ={ formula: `SUM(H1:H${row_num-1})` }
+        newRow.getCell(9).value ={ formula: `SUM(I1:I${row_num-1})` }
 
         row_num =row_num +1
 
         SecondLastRow=[
                     "",
                     "",
+                    "",
                     "", 
                     locationTaxString, 
-                    `E${row_num-1}*${locationTax}`, 
+                    ``, 
                     "", 
-                    `G${row_num-1}*${locationTax}`, 
-                    `H${row_num-1}*${locationTax}`, 
+                    ``, 
+                    ``, 
                     "", 
                     "", 
                     "", 
-                    ""
+                
         ];
 
         newRow = worksheet.addRow(SecondLastRow);
-        newRow.getCell(5).value = { formula: `E${row_num-1}*${locationTax}` }
-        newRow.getCell(7).value ={ formula: `G${row_num-1}*${locationTax}` }
+        newRow.getCell(6).value = { formula: `F${row_num-1}*${locationTax}` }
         newRow.getCell(8).value ={ formula: `H${row_num-1}*${locationTax}` }
+        newRow.getCell(9).value ={ formula: `I${row_num-1}*${locationTax}` }
         row_num =row_num +1
 
         LastRow=[
                     "",
                     "",
                     "",
-                    "Total:", 
-                    `E${row_num-2}+E${row_num-1}`, 
                     "",
-                    `G${row_num-2}+G${row_num-1}`, 
-                    `H${row_num-2}+H${row_num-1}`, 
+                    "Total:", 
+                    ``, 
+                    "",
+                    ``, 
+                    ``, 
                     "", 
                     "", 
                     "", 
-                    ""
+        
         ];
         newRow = worksheet.addRow(LastRow);
-        newRow.getCell(5).value = { formula: `E${row_num-2}+E${row_num-1}` }
-        newRow.getCell(7).value ={ formula: `G${row_num-2}+G${row_num-1}` }
+        newRow.getCell(6).value = { formula: `F${row_num-2}+F${row_num-1}` }
         newRow.getCell(8).value ={ formula: `H${row_num-2}+H${row_num-1}` }
+        newRow.getCell(9).value ={ formula: `I${row_num-2}+I${row_num-1}` }
 
 
 
