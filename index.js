@@ -264,7 +264,7 @@ generateReportButton.addEventListener("click", async function() {
         }
         
         if (imageID != undefined) {
-            imageLink = `IMAGE("https://imgnyc.rentalworks.cloud/api/v1/appimage/getimage?appimageid=${String(imageID)}&thumbnail=false",4,150,150)`;
+            imageLink = `IMAGE("https://imgnyc.rentalworks.cloud/api/v1/appimage/getimage?appimageid=${String(imageID)}&thumbnail=false",4,50,50)`;
         }
 
 
@@ -318,7 +318,11 @@ generateReportButton.addEventListener("click", async function() {
             // Apply image formula to IMAGE (Column K, index 10)
             if (imageID != undefined) {
                newRow.getCell(2).value = { formula: imageLink };
-               newRow.height = 112.5; // 150px is approx 112.5 points in Excel
+            //    newRow.height = 112.5; // 150px is approx 112.5 points in Excel
+            // newRow.height=75 //100px
+                //newRow.height=56.25 //75px
+                newRow.height=37.5 //50px
+
             }
         }
     }
