@@ -398,6 +398,92 @@ generateReportButton.addEventListener("click", async function() {
         newRow.getCell(8).value ={ formula: `H${row_num-1}+H${row_num}` }
         newRow.getCell(9).value ={ formula: `I${row_num-1}+I${row_num}` }
 
+        const sheet2 = workbook.addWorksheet('Client')
+
+        blackspacefive=["","","","",""]
+
+        darkgrey2="#999999"
+
+        let template_row_one=sheet2.addRow(blackspacefive)
+        template_row_one.fill ={
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF999999' }
+        }
+        sheet2.mergeCells('A1:Z1')
+
+        let template_row_two=sheet2.addRow(blackspacefive)
+        template_row_two.alignment = { horizontal: 'center', vertical: 'middle'}
+        template_row_two.height=112.5
+        template_row_two.fill ={
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF999999' }
+        }
+        sheet2.mergeCells('A2:Z2')
+        
+        let template_row_three=sheet2.addRow(["LUXURY FURNISHINGS INVENTORY","","","",""])
+        template_row_three.alignment = { horizontal: 'center'}
+        template_row_three.font = {
+        name: 'Montserrat',
+        size: 18,
+        color: { argb: 'FFFFFFFF' },
+        };
+        template_row_three.fill ={
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF999999' }
+        }
+        sheet2.mergeCells("A3:Z3")
+
+        let template_row_four=sheet2.addRow(["ADDRESS","","","",""])
+        template_row_four.height=44.25
+        template_row_four.alignment = { horizontal: 'center'}
+        template_row_four.font = {
+        name: 'Montserrat',
+        size: 12,
+        color: { argb: 'FFFFFFFF' },
+        };
+        template_row_four.fill ={
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF999999' }
+        }
+        sheet2.mergeCells("A4:Z4")
+
+        let template_row_five=sheet2.addRow(blackspacefive)
+        template_row_five.fill ={
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF999999' }
+        }
+        sheet2.mergeCells('A5:Z5')
+
+        // let colA=sheet2.getColumn(1)
+        // colA.width=62.25
+
+    // const img = document.getElementById('logo');
+    // const canvas = document.createElement('canvas');
+    
+    // canvas.width = img.naturalWidth;
+    // canvas.height = img.naturalHeight;
+    
+    // // Draw the image onto the canvas
+    // const ctx = canvas.getContext('2d');
+    // ctx.drawImage(img, 0, 0);
+    
+    // const dataURL = canvas.toDataURL('image/jpeg'); // Specify the MIME type
+    
+    // const imageId = workbook.addImage({
+    // base64: dataURL,
+    // extension: 'png',
+    // });
+
+    // sheet2.addImage(imageId, {
+    //     tl: { col: 0, row: 1 },
+    //     ext: { width: img.naturalWidth, height: img.naturalHeight }
+    // });
+        
 
 
 
