@@ -12,70 +12,136 @@
     <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
+    <div id="singleFile">
+        <div class="excelcontainer">
 
-    <div class="excelcontainer">
-
-        <div>
-        <label for="excel-file-input" style="cursor: pointer; background-color: #217346; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
-            Load All Items Excel File
-        </label>
-
-        <input type="file" 
-            id="excel-file-input" 
-            accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
-            style="display: none;">
-
-        <p>
-            <strong>Selected File:</strong> 
-            <span id="file-name-display">No file selected</span>
-        </p>
-        </div>
-
-
-        <div>
-            <label for="excel-file-input-outstanding" style="cursor: pointer; background-color: #217346; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
-            Load Outsanding Report Excel File
+            <div>
+            <label for="excel-file-input" style="cursor: pointer; background-color: #217346; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+                Load All Items Excel File
             </label>
 
             <input type="file" 
-            id="excel-file-input-outstanding" 
-            accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
-            style="display: none;">
+                id="excel-file-input" 
+                accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+                style="display: none;">
 
             <p>
                 <strong>Selected File:</strong> 
-                <span id="file-name-display-asset">No file selected</span>
+                <span id="file-name-display">No file selected</span>
             </p>
+            </div>
+
+
+            <div>
+                <label for="excel-file-input-outstanding" style="cursor: pointer; background-color: #217346; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+                Load Outsanding Report Excel File
+                </label>
+
+                <input type="file" 
+                id="excel-file-input-outstanding" 
+                accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+                style="display: none;">
+
+                <p>
+                    <strong>Selected File:</strong> 
+                    <span id="file-name-display-asset">No file selected</span>
+                </p>
+
+
+            </div>
 
 
         </div>
 
+        <div>Location:</div>
+        <div class="radio-group">
 
-    </div>
-
-    <div>Location:</div>
-    <div class="radio-group">
-
-    <div class="radio-option">
-        <input type="radio" id="option1" name="choice" value="NYC" checked>
-        <label for="option1">NYC</label>
-    </div>
-    <div class="radio-option">
-        <input type="radio" id="option2" name="choice" value="FL">
-        <label for="option2">FL</label>
-    </div>
-    
-    </div>
-
-    <br>
-
-    <div>
-        <label for="process_files" style="cursor: pointer; background-color: #4138eb; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
-        Generate Report
-        </label>
+        <div class="radio-option">
+            <input type="radio" id="option1" name="choice" value="NYC" checked>
+            <label for="option1">NYC</label>
+        </div>
+        <div class="radio-option">
+            <input type="radio" id="option2" name="choice" value="FL">
+            <label for="option2">FL</label>
+        </div>
         
-        <button id="process_files" style="display: none;"></button>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="process_files" style="cursor: pointer; background-color: #4138eb; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+            Generate Report
+            </label>
+            
+            <button id="process_files" style="display: none;"></button>
+        </div>
     </div>
+
+    <div id="multifile" style="display: none;">
+
+            <div>
+            <label for="excel-file-input-multi" style="cursor: pointer; background-color: #217346; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+                Load Multiple All Items Excel File
+            </label>
+
+            <input type="file" 
+                id="excel-file-input-multi" 
+                accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+                style="display: none;" multiple>
+
+            <p>
+                <strong>Selected File:</strong> 
+                <span id="file-name-display-all-multi">No file selected</span>
+            </p>
+            </div>
+            
+            <div>
+                <label for="excel-file-input-outstanding-multi" style="cursor: pointer; background-color: #217346; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+                Load Mutliple Outsanding Report Excel File
+                </label>
+
+                <input type="file" 
+                id="excel-file-input-outstanding-multi" 
+                accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+                style="display: none;" multiple>
+
+                <p>
+                    <strong>Selected File:</strong> 
+                    <span id="file-name-display-asset-multi">No file selected</span>
+                </p>
+
+
+            </div>
+            
+            <div>Location:</div>
+                <div class="radio-group">
+
+                <div class="radio-option">
+                    <input type="radio" id="option1-multi" name="choice-multi" value="NYC" checked>
+                    <label for="option1-multi">NYC</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="option2-multi" name="choice-multi" value="FL">
+                    <label for="option2-multi">FL</label>
+                </div>
+
+            </div>
+
+            <br>
+
+            <div>
+            <label for="process_files_multi" style="cursor: pointer; background-color: #4138eb; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+            Generate Report
+            </label>
+            
+            <button id="process_files_multi" style="display: none;"></button>
+        </div>
+
+
+
+    </div>
+
 
     
     <div style="display:none;">

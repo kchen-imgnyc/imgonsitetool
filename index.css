@@ -1,4 +1,8 @@
-.excelcontainer{
+.excelcontainer .multifile{
+    display: flex;
+    gap:20px;
+}
+body{
     display: flex;
     gap:20px;
 }

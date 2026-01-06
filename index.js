@@ -373,9 +373,9 @@ generateReportButton.addEventListener("click", async function() {
         ];
 
         newRow = worksheet.addRow(SecondLastRow);
-        newRow.getCell(6).value = { formula: `F${row_num}*${locationTax}` }
-        newRow.getCell(8).value ={ formula: `H${row_num}*${locationTax}` }
-        newRow.getCell(9).value ={ formula: `I${row_num}*${locationTax}` }
+        newRow.getCell(6).value = { formula: `F${row_num-1}*${locationTax}` }
+        newRow.getCell(8).value ={ formula: `H${row_num-1}*${locationTax}` }
+        newRow.getCell(9).value ={ formula: `I${row_num-1}*${locationTax}` }
         row_num =row_num +1
 
         LastRow=[
@@ -394,9 +394,9 @@ generateReportButton.addEventListener("click", async function() {
         
         ];
         newRow = worksheet.addRow(LastRow);
-        newRow.getCell(6).value = { formula: `F${row_num-1}+F${row_num}` }
-        newRow.getCell(8).value ={ formula: `H${row_num-1}+H${row_num}` }
-        newRow.getCell(9).value ={ formula: `I${row_num-1}+I${row_num}` }
+        newRow.getCell(6).value = { formula: `F${row_num-2}+F${row_num-1}` }
+        newRow.getCell(8).value ={ formula: `H${row_num-2}+H${row_num-1}` }
+        newRow.getCell(9).value ={ formula: `I${row_num-2}+I${row_num-1}` }
 
         const sheet2 = workbook.addWorksheet('Client')
 
@@ -510,6 +510,23 @@ generateReportButton.addEventListener("click", async function() {
 
 
 $("input[name='choice']").on("click",function(){
+    locationChoice=this.value
+    console.log(locationChoice)
+
+    if (locationChoice === "NYC"){
+        locationChoice="NYC";
+        locationTax=0.08875
+        locationTaxString="NYC Sales Tax:"
+    }
+    else if (locationChoice === "FL"){
+        locationChoice="FL";
+        locationTax=0.07
+        locationTaxString="FL Sales Tax:"
+    }
+
+});
+
+$("input[name='choice-multi']").on("click",function(){
     locationChoice=this.value
     console.log(locationChoice)
 
