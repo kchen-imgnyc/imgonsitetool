@@ -4,140 +4,8 @@ let locationChoice="NYC";
 let locationTax=0.08875
 let locationTaxString="NYC Sales Tax:"
 
-document.addEventListener("DOMContentLoaded", function() {
- 
-const excelInputBtn=document.getElementById("excel-file-input")
-const fileNameDisplay = document.getElementById('file-name-display');
 
-excelInputBtn.addEventListener(("change"),function(){
-    const files = event.target.files;
-
-    if (files.length > 0) {
-        allData=[]
-        const selectedFile = files[0];
-        fileNameDisplay.textContent = selectedFile.name;
-        console.log('File Name:', selectedFile.name);
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-        const data = e.target.result;
-
-        const workbook = XLSX.read(data, { type: 'array' });
-
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[firstSheetName];
-        const json = XLSX.utils.sheet_to_json(worksheet);
-
-        document.getElementById('output').textContent = JSON.stringify(json, null, 2);
-        
-        addedCodes=[]
-
-        for(let i=0;i<json.length;i++){
-            item=json[i]
-                
-            icode=item["ICode"]
-            discription=item["Description"]
-            unitCost=item["UnitCost"]
-            manufacturer=item["Manufacturer"]
-
-            if (addedCodes.indexOf(icode) == -1 && icode != undefined){
-                allData.push([icode,discription,unitCost,manufacturer])
-                addedCodes.push(icode)
-            }
-            else if( icode == undefined){
-                allData.push([icode,discription,unitCost,manufacturer])
-                addedCodes.push(icode)
-            }
-            
-            
-
-        }
-
-        console.log(allData)
-
-        };
-
-        reader.readAsArrayBuffer(selectedFile);
-
-
-
-    } else {
-
-        fileNameDisplay.textContent = 'No file selected';
-    }
-         
-});
-
-
-
-const outstandingExcelBtn=document.getElementById("excel-file-input-outstanding")
-const fileNameDisplayAsset=document.getElementById('file-name-display-asset');
-
-outstandingExcelBtn.addEventListener(("change"),function(){
-
-    const files = event.target.files;
-    if (files.length > 0) {
-        outstandingData=new Map()
-        const selectedFile = files[0];
-        fileNameDisplayAsset.textContent = selectedFile.name;
-    
-        const reader = new FileReader();
-        reader.onload = function(e) {
-        const data = e.target.result;
-        const workbook = XLSX.read(data, { type: 'array' });
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[firstSheetName];
-        const json = XLSX.utils.sheet_to_json(worksheet);
-
-
-        for(let i=0;i<json.length;i++){
-            item=json[i]
-
-            icode=item["ICode"]
-            category=item["Category"]
-            imageID=item["ImageId"]
-            qty=item["Quantity"]
-
-            dataObj={
-                "icode":icode,
-                "category":category,
-                "imageID":imageID,
-                "qty":qty
-            }
-            
-            if (outstandingData.has(icode)){
-                value=outstandingData.get(icode)
-                value["qty"]=value["qty"] +1
-                outstandingData.set(icode,value)
-            }
-            else{
-                outstandingData.set(icode,dataObj)
-            }
-
-        }
-
-        console.log(outstandingData)
-
-
-        };
-
-        reader.readAsArrayBuffer(selectedFile);
-
-    } else {
-
-        fileNameDisplayAsset.textContent = 'No file selected';
-    }
-         
-
-});
-
-
-let icodesRan=[]
-
-const generateReportButton =document.getElementById("process_files")
-
-generateReportButton.addEventListener("click", async function() {
-    // 1. Initial Checks
+async function generateReport(){
     icodesRan=[]
     if (allData.length == 0) {
         return alert("Please Upload All Items Excel Sheet");
@@ -149,7 +17,6 @@ generateReportButton.addEventListener("click", async function() {
 
     const filename = "onsite.xlsx";
 
-    // 2. Setup Workbook and Worksheet
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet1');
 
@@ -506,6 +373,164 @@ generateReportButton.addEventListener("click", async function() {
         console.error("Error generating or saving Excel file:", error);
         alert("Failed to generate Excel report.");
     }
+
+
+};
+
+
+document.addEventListener("DOMContentLoaded", function() {
+
+
+$("label[for='switch_to_single']").on("click",function(){
+
+    $(this).hide()
+    $("label[for='switch_to_multi']").show()
+    $("#singleFile").show()
+    $("#multifile").hide()
+});
+
+$("label[for='switch_to_multi']").on("click",function(){
+
+    $(this).hide()
+    $("label[for='switch_to_single']").show()
+    $("#singleFile").hide()
+    $("#multifile").show()
+});
+
+
+ 
+const excelInputBtn=document.getElementById("excel-file-input")
+const fileNameDisplay = document.getElementById('file-name-display');
+
+excelInputBtn.addEventListener(("change"),function(){
+    const files = event.target.files;
+
+    if (files.length > 0) {
+        allData=[]
+        const selectedFile = files[0];
+        fileNameDisplay.textContent = selectedFile.name;
+        console.log('File Name:', selectedFile.name);
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+        const data = e.target.result;
+
+        const workbook = XLSX.read(data, { type: 'array' });
+
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const json = XLSX.utils.sheet_to_json(worksheet);
+
+        document.getElementById('output').textContent = JSON.stringify(json, null, 2);
+        
+        addedCodes=[]
+
+        for(let i=0;i<json.length;i++){
+            item=json[i]
+                
+            icode=item["ICode"]
+            discription=item["Description"]
+            unitCost=item["UnitCost"]
+            manufacturer=item["Manufacturer"]
+
+            if (addedCodes.indexOf(icode) == -1 && icode != undefined){
+                allData.push([icode,discription,unitCost,manufacturer])
+                addedCodes.push(icode)
+            }
+            else if( icode == undefined){
+                allData.push([icode,discription,unitCost,manufacturer])
+                addedCodes.push(icode)
+            }
+            
+            
+
+        }
+
+        console.log(allData)
+
+        };
+
+        reader.readAsArrayBuffer(selectedFile);
+
+
+
+    } else {
+
+        fileNameDisplay.textContent = 'No file selected';
+    }
+         
+});
+
+
+
+const outstandingExcelBtn=document.getElementById("excel-file-input-outstanding")
+const fileNameDisplayAsset=document.getElementById('file-name-display-asset');
+
+outstandingExcelBtn.addEventListener(("change"),function(){
+
+    const files = event.target.files;
+    if (files.length > 0) {
+        outstandingData=new Map()
+        const selectedFile = files[0];
+        fileNameDisplayAsset.textContent = selectedFile.name;
+    
+        const reader = new FileReader();
+        reader.onload = function(e) {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const json = XLSX.utils.sheet_to_json(worksheet);
+
+
+        for(let i=0;i<json.length;i++){
+            item=json[i]
+
+            icode=item["ICode"]
+            category=item["Category"]
+            imageID=item["ImageId"]
+            qty=item["Quantity"]
+
+            dataObj={
+                "icode":icode,
+                "category":category,
+                "imageID":imageID,
+                "qty":qty
+            }
+            
+            if (outstandingData.has(icode)){
+                value=outstandingData.get(icode)
+                value["qty"]=value["qty"] +1
+                outstandingData.set(icode,value)
+            }
+            else{
+                outstandingData.set(icode,dataObj)
+            }
+
+        }
+
+        console.log(outstandingData)
+
+
+        };
+
+        reader.readAsArrayBuffer(selectedFile);
+
+    } else {
+
+        fileNameDisplayAsset.textContent = 'No file selected';
+    }
+         
+
+});
+
+
+let icodesRan=[]
+
+const generateReportButton =document.getElementById("process_files")
+
+generateReportButton.addEventListener("click", async function() {
+    generateReport()
 });
 
 
@@ -517,11 +542,13 @@ $("input[name='choice']").on("click",function(){
         locationChoice="NYC";
         locationTax=0.08875
         locationTaxString="NYC Sales Tax:"
+        $("#option1-multi").prop("checked",true)
     }
     else if (locationChoice === "FL"){
         locationChoice="FL";
         locationTax=0.07
         locationTaxString="FL Sales Tax:"
+        $("#option2-multi").prop("checked",true)
     }
 
 });
@@ -534,14 +561,158 @@ $("input[name='choice-multi']").on("click",function(){
         locationChoice="NYC";
         locationTax=0.08875
         locationTaxString="NYC Sales Tax:"
+        $("#option1").prop("checked",true)
     }
     else if (locationChoice === "FL"){
         locationChoice="FL";
         locationTax=0.07
         locationTaxString="FL Sales Tax:"
+        $("#option2").prop("checked",true)
     }
 
 });
+
+
+let multfiledata={}
+
+$("#excel-file-input-multi").on("change",function(){
+
+    const files = event.target.files;
+
+    if (files.length > 0) {
+        allData=[]
+
+        filenames=''
+        
+        for (let i = files.length-1; i>=0; i--) {
+            currentFile=files[i]
+            filenames=filenames + currentFile.name + " , "
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+            const data = e.target.result;
+
+            const workbook = XLSX.read(data, { type: 'array' });
+
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const json = XLSX.utils.sheet_to_json(worksheet);
+
+            document.getElementById('output').textContent = JSON.stringify(json, null, 2);
+            
+            addedCodes=[]
+
+
+            for(let i=0;i<json.length;i++){
+                item=json[i]
+
+                icode=item["ICode"]
+                discription=item["Description"]
+                unitCost=item["UnitCost"]
+                manufacturer=item["Manufacturer"]
+
+                if (addedCodes.indexOf(icode) == -1 && icode != undefined){
+                    allData.push([icode,discription,unitCost,manufacturer])
+                    addedCodes.push(icode)
+                }
+                else if( icode == undefined){
+                    allData.push([icode,discription,unitCost,manufacturer])
+                    addedCodes.push(icode)
+                }
+                
+                
+
+            }
+
+            console.log(allData)
+
+            };
+
+            reader.readAsArrayBuffer(currentFile);
+            
+
+        }
+
+        $("#file-name-display-all-multi").text(filenames)
+
+
+
+    } else {
+
+        $("#file-name-display-all-multi").text('No file selected');
+    }
+
+
+
+});
+
+
+$("#excel-file-input-outstanding-multi").on("change",function(){
+
+    const files = event.target.files;
+    if (files.length > 0) {
+        outstandingData=new Map()
+        filenames=''
+        for (let i = 0; i < files.length; i++) {
+        const selectedFile = files[i];
+        filenames=filenames + selectedFile.name +" , "
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const json = XLSX.utils.sheet_to_json(worksheet);
+        for(let i=0;i<json.length;i++){
+            item=json[i]
+            icode=item["ICode"]
+            category=item["Category"]
+            imageID=item["ImageId"]
+            qty=item["Quantity"]
+
+            dataObj={
+                "icode":icode,
+                "category":category,
+                "imageID":imageID,
+                "qty":qty
+            }
+            
+            if (outstandingData.has(icode)){
+                value=outstandingData.get(icode)
+                value["qty"]=value["qty"] +1
+                outstandingData.set(icode,value)
+            }
+            else{
+                outstandingData.set(icode,dataObj)
+            }
+
+        }
+
+        console.log(outstandingData)
+
+
+        };
+
+        reader.readAsArrayBuffer(selectedFile);
+    }
+
+    $("#file-name-display-asset-multi").text(filenames)
+
+    } else {
+
+        $("#file-name-display-asset-multi").text('No file selected')
+    }
+         
+
+
+});
+
+
+$("#process_files_multi").on("click",function(){
+    generateReport()
+});
+
 
 
 });

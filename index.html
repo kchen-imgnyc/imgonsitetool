@@ -12,6 +12,21 @@
     <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
+
+    <div>
+    <label for="switch_to_single" style="display:none; cursor: pointer; background-color:gray; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+                Switch To Single File Report
+    </label>
+    <button id="switch_to_single" style="display: none;"></button>
+
+    <label for="switch_to_multi" style="cursor: pointer; background-color:gray; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
+                Switch To Multi File Report
+    </label>
+    <button id="switch_to_multi" style="display: none;"></button>
+    </div>
+    <br>
+    <br>
+
     <div id="singleFile">
         <div class="excelcontainer">
 
@@ -78,8 +93,8 @@
         </div>
     </div>
 
-    <div id="multifile" style="display: none;">
-
+    <div id="multifile" style="display:none">
+        <div class="">
             <div>
             <label for="excel-file-input-multi" style="cursor: pointer; background-color: #217346; color: white; padding: 10px 15px; border-radius: 5px; font-family: Arial, sans-serif;">
                 Load Multiple All Items Excel File
@@ -138,6 +153,8 @@
             <button id="process_files_multi" style="display: none;"></button>
         </div>
 
+
+        </div>
 
 
     </div>
