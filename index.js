@@ -73,16 +73,250 @@ async function generateReport(){
         col.style.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
     });
     
-    worksheet.getRow(1).font = {
+        formatValueString=`FORMAT: -TRIPLE CHECK THAT ALL ITEMS ARE AS LISTED
+    -Do a quick check—DRAPERIES/SHEERS, AREA RUG & light fixtures for all rooms
+    —table lamps, nightstands & pillows/throws for bedrooms
+    —bathrooms
+    -Correct # counts
+    -Correct vendor
+    -FINAL changes/refreshes accounted for
+    -Always login to vendors for pricing
+    -Retail costs MUST include discounts
+    Organic Modernism, WE, PB, C&B, CB2, William Sonoma, 
+    -DO NOT guess name/pricing (UNSURE OF SOMETHING PLEASE HIGHLIGHT AND NOTE)
+    (incorrect vendors create further issues for uplifts)
+    -CORRECT FORMATTING IN Vendor + Item Name for ARTWORK
+    (ARTWORK: “SIZE” TYPE) 
+    -All sizing must be listed in Item Description column (rugs & art) and always FIRST 
+    i.e. 36” round gold mirror
+    -art format—IMG ART LOFT: size & type only
+    i.e. 60” x 72” canvas
+    `
+    formatRow=[
+        formatValueString,
+        "",
+        "",
+        "",
+        "", 
+        ``, 
+        "",
+        ``, 
+        ``, 
+        "", 
+        "", 
+        "",
+    ]
+
+
+
+    let formatRowExcel=worksheet.insertRow(1,formatRow)
+    formatRowExcel.fill ={
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF999999' }
+    }
+    
+
+    essentialString=
+    `ESSENTIAL BEDDING INCLUDES: INSERT PILLOWS, INSERT DUVET, BASIC BEDDING SET 4 SHAMS, 1 FLAT SHEET, 1 FITTED SHEET
+    TWIN- $600
+    FULL- $800
+    QUEEN- $850
+    KING- $1,000																																
+    `
+    let essentialRow=[
+        essentialString,
+        "",
+        "",
+        "",
+        "", 
+        ``, 
+        "",
+        ``, 
+        ``, 
+        "", 
+        "", 
+        "",
+    ]
+    let essentialRowExcel=worksheet.insertRow(1,essentialRow)
+    essentialRowExcel.fill ={
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'b4cdcd' }
+    }
+
+    keyRowString=
+    `KEY CHART: 
+    COFFEE TABLE BOOKS- $65, COOKBOOKS- $45, KIDS BOOKS- $35, PROP BOOKS $26.99  - FLORALS: XL LARGE $24.99EA LARGE $18.99EA MED. $12.99EA SM $8.99EA CUT STEM $5.99EA BATHROOM: (1) BATH TOWEL $15EA (1) HAND TOWEL $10 WASHCLOTH $5EA 
+    `
+    keyRow=[
+        keyRowString,
+        "",
+        "",
+        "",
+        "", 
+        ``, 
+        "",
+        ``, 
+        ``, 
+        "", 
+        "", 
+        "",
+    ]
+    let keyRowExcel=worksheet.insertRow(1,keyRow)
+    keyRowExcel.fill ={
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'b4cdcd' }
+    }
+
+        customRow=[
+        "DO NOT TOUCH",
+        "DO NOT TOUCH",
+        "DESIGNER INPUT",
+        "DESIGNER ADJUST ACCORDINGLY",
+        "DESIGNER INPUT",
+        "DO NOT TOUCH",
+        "INVENTORY INPUT ONLY",
+        "DO NOT TOUCH",
+        "DO NOT TOUCH",
+        "DESIGNER/INVENTORY INPUT",
+        "DESIGNER/INVENTORY INPUT",
+        "DESIGNER INPUT",
+    ]
+    let colorCodedRow=worksheet.insertRow(1,customRow)
+    colorCodedRow.eachCell({ includeEmpty: true }, (cell) => {
+
+        if (cell.value == "DO NOT TOUCH" || cell.value == "INVENTORY INPUT ONLY"){
+            cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFA500'}
+            };
+        }
+        else if (cell.value == "DESIGNER INPUT" || cell.value == "DESIGNER/INVENTORY INPUT"){
+            cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFFF00'}
+            };
+        }
+        else if(cell.value == "DESIGNER ADJUST ACCORDINGLY"){
+            cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFFFE0'}
+            };
+        }
+
+    });
+
+    blankspacefive=["","","","",""]
+
+    darkgrey2="#999999"
+
+    let template_row_five=worksheet.insertRow(1,blankspacefive)
+    template_row_five.fill ={
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF999999' }
+    }
+
+    let template_row_four=worksheet.insertRow(1,["ADDRESS","","","",""])
+
+    template_row_four.fill ={
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF999999' }
+    }
+
+    let template_row_three=worksheet.insertRow(1,["LUXURY FURNISHINGS INVENTORY","","","",""])
+    template_row_three.fill ={
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF999999' }
+    }
+
+    let template_row_two=worksheet.insertRow(1,blankspacefive)
+    template_row_two.fill ={
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF999999' }
+    }
+
+    let template_row_one=worksheet.insertRow(1,blankspacefive)
+    template_row_one.fill ={
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF999999' }
+    }
+
+
+    worksheet.mergeCells('A1:L1')
+
+    row2=worksheet.getRow(2)
+    row2.alignment = { horizontal: 'center', vertical: 'middle'}
+    row2.height=112.5
+
+    worksheet.mergeCells('A2:L2')
+
+
+    row3=worksheet.getRow(3)
+    row3.alignment = { horizontal: 'center'}
+    row3.alignment = { horizontal: 'center'}
+    row3.font = {
+    name: 'Montserrat',
+    size: 18,
+    color: { argb: 'FFFFFFFF' },
+    };
+
+
+    worksheet.mergeCells('A3:L3')
+
+    row4=worksheet.getRow(4)
+    row4.height=44.25
+    row4.alignment = { horizontal: 'center'}
+    row4.font = {
+    name: 'Montserrat',
+    size: 12,
+    color: { argb: 'FFFFFFFF' },
+    };
+    worksheet.mergeCells('A4:L4')
+
+
+    worksheet.mergeCells('A5:L5')
+
+    // worksheet.mergeCells('A6:L6')
+
+    row7=worksheet.getRow(7)
+    row7.alignment = { horizontal: 'left', vertical: 'bottom',wrapText: true}
+    row7.height=37.5;
+    worksheet.mergeCells('A7:L7')
+
+    row8=worksheet.getRow(8)
+    row8.alignment = { horizontal: 'left', vertical: 'bottom',wrapText: true}
+    row8.height=75;
+    worksheet.mergeCells('A8:L8')
+
+    row9=worksheet.getRow(9)
+    row9.alignment = { horizontal: 'left', vertical: 'bottom',wrapText: true}
+    row9.height=237;
+    worksheet.mergeCells('A9:L9')
+
+
+    worksheet.getRow(10).font = {
     name: 'Montserrat',
     size: 10,
     bold: true,
     };
-    
-    worksheet.getRow(1).height = 37.5;
-    worksheet.getRow(1).alignment = { horizontal: 'center', vertical: 'middle'};
+    worksheet.getRow(10).height = 37.5;
+    worksheet.getRow(10).alignment = { horizontal: 'center', vertical: 'middle'};
 
-    let row_num = 2; 
+
+
+
+
+    let row_num =10; 
     for (let i = 0; i < allData.length; i++) {
 
         let row = allData[i];
@@ -137,13 +371,18 @@ async function generateReport(){
 
         let newRowValues = [
             icode,imageLink, qty, category, unitCost, estimateFormula, unitCost, 
-            totalFormula, unitCost, `${manufacturer} - ${description}`, "", 
+            totalFormula, unitCost, `${manufacturer}: ${description}`, "", 
             "" 
         ];
 
 
         if (icode == undefined) {
-            worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 1
+            let borderRow=worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 1
+            borderRow.eachCell({ includeEmpty: true }, (cell) => {
+                cell.border = {
+                bottom: { style: 'thin' }
+            };
+            });
             worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 2
             newRowValues = [
                 "","", "", description, "", "", "", 
@@ -170,12 +409,22 @@ async function generateReport(){
             bold: true,
             }
         }
+        else{
+            newRow.font={
+            size: 9,
+            }
+        }
 
         icodesRan.push(icode)
         row_num = row_num + 1
 
         // Set formulas in ExcelJS *after* adding the row, using the cell object
         if (icode != undefined) {
+
+            estimateFormula = `C${newRow.number}*E${newRow.number}`;
+            totalFormula = `C${newRow.number}*G${newRow.number}`;
+
+
             // Apply formula to ESTIMATE TOTAL (Column E, index 4)
             newRow.getCell(6).value = { formula: estimateFormula }; 
             
@@ -185,8 +434,8 @@ async function generateReport(){
             // Apply image formula to IMAGE (Column K, index 10)
             if (imageID != undefined) {
                newRow.getCell(2).value = { formula: imageLink };
-            //    newRow.height = 112.5; // 150px is approx 112.5 points in Excel
-            // newRow.height=75 //100px
+                //    newRow.height = 112.5; // 150px is approx 112.5 points in Excel
+                // newRow.height=75 //100px
                 //newRow.height=56.25 //75px
                 newRow.height=37.5 //50px
 
@@ -217,9 +466,9 @@ async function generateReport(){
         ];
 
         newRow = worksheet.addRow(ThirdLastRow);
-        newRow.getCell(6).value = { formula: `SUM(F1:F${row_num-1})` }
-        newRow.getCell(8).value ={ formula: `SUM(H1:H${row_num-1})` }
-        newRow.getCell(9).value ={ formula: `SUM(I1:I${row_num-1})` }
+        newRow.getCell(6).value = { formula: `SUM(F1:F${newRow.number-1})` }
+        newRow.getCell(8).value ={ formula: `SUM(H1:H${newRow.number-1})` }
+        newRow.getCell(9).value ={ formula: `SUM(I1:I${newRow.number-1})` }
 
         row_num =row_num +1
 
@@ -240,9 +489,9 @@ async function generateReport(){
         ];
 
         newRow = worksheet.addRow(SecondLastRow);
-        newRow.getCell(6).value = { formula: `F${row_num-1}*${locationTax}` }
-        newRow.getCell(8).value ={ formula: `H${row_num-1}*${locationTax}` }
-        newRow.getCell(9).value ={ formula: `I${row_num-1}*${locationTax}` }
+        newRow.getCell(6).value = { formula: `F${newRow.number-1}*${locationTax}` }
+        newRow.getCell(8).value ={ formula: `H${newRow.number-1}*${locationTax}` }
+        newRow.getCell(9).value ={ formula: `I${newRow.number-1}*${locationTax}` }
         row_num =row_num +1
 
         LastRow=[
@@ -261,96 +510,20 @@ async function generateReport(){
         
         ];
         newRow = worksheet.addRow(LastRow);
-        newRow.getCell(6).value = { formula: `F${row_num-2}+F${row_num-1}` }
-        newRow.getCell(8).value ={ formula: `H${row_num-2}+H${row_num-1}` }
-        newRow.getCell(9).value ={ formula: `I${row_num-2}+I${row_num-1}` }
+        newRow.getCell(6).value = { formula: `F${newRow.number-2}+F${newRow.number-1}` }
+        newRow.getCell(8).value ={ formula: `H${newRow.number-2}+H${newRow.number-1}` }
+        newRow.getCell(9).value ={ formula: `I${newRow.number-2}+I${newRow.number-1}` }
 
-        const sheet2 = workbook.addWorksheet('Client')
 
-        blackspacefive=["","","","",""]
-
-        darkgrey2="#999999"
-
-        let template_row_one=sheet2.addRow(blackspacefive)
-        template_row_one.fill ={
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FF999999' }
-        }
-        sheet2.mergeCells('A1:Z1')
-
-        let template_row_two=sheet2.addRow(blackspacefive)
-        template_row_two.alignment = { horizontal: 'center', vertical: 'middle'}
-        template_row_two.height=112.5
-        template_row_two.fill ={
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FF999999' }
-        }
-        sheet2.mergeCells('A2:Z2')
-        
-        let template_row_three=sheet2.addRow(["LUXURY FURNISHINGS INVENTORY","","","",""])
-        template_row_three.alignment = { horizontal: 'center'}
-        template_row_three.font = {
-        name: 'Montserrat',
-        size: 18,
-        color: { argb: 'FFFFFFFF' },
-        };
-        template_row_three.fill ={
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FF999999' }
-        }
-        sheet2.mergeCells("A3:Z3")
-
-        let template_row_four=sheet2.addRow(["ADDRESS","","","",""])
-        template_row_four.height=44.25
-        template_row_four.alignment = { horizontal: 'center'}
-        template_row_four.font = {
-        name: 'Montserrat',
-        size: 12,
-        color: { argb: 'FFFFFFFF' },
-        };
-        template_row_four.fill ={
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FF999999' }
-        }
-        sheet2.mergeCells("A4:Z4")
-
-        let template_row_five=sheet2.addRow(blackspacefive)
-        template_row_five.fill ={
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FF999999' }
-        }
-        sheet2.mergeCells('A5:Z5')
-
-        // let colA=sheet2.getColumn(1)
-        // colA.width=62.25
-
-    // const img = document.getElementById('logo');
-    // const canvas = document.createElement('canvas');
     
-    // canvas.width = img.naturalWidth;
-    // canvas.height = img.naturalHeight;
-    
-    // // Draw the image onto the canvas
-    // const ctx = canvas.getContext('2d');
-    // ctx.drawImage(img, 0, 0);
-    
-    // const dataURL = canvas.toDataURL('image/jpeg'); // Specify the MIME type
-    
-    // const imageId = workbook.addImage({
-    // base64: dataURL,
-    // extension: 'png',
-    // });
 
-    // sheet2.addImage(imageId, {
-    //     tl: { col: 0, row: 1 },
-    //     ext: { width: img.naturalWidth, height: img.naturalHeight }
-    // });
-        
+
+    
+    
+
+
+
+
 
 
 
@@ -377,7 +550,6 @@ async function generateReport(){
 
 };
 
-
 document.addEventListener("DOMContentLoaded", function() {
 
 
@@ -399,10 +571,8 @@ $("label[for='switch_to_multi']").on("click",function(){
 
 
  
-const excelInputBtn=document.getElementById("excel-file-input")
 const fileNameDisplay = document.getElementById('file-name-display');
-
-excelInputBtn.addEventListener(("change"),function(){
+$("#excel-file-input").on(("change"),function(){
     const files = event.target.files;
 
     if (files.length > 0) {
@@ -462,11 +632,8 @@ excelInputBtn.addEventListener(("change"),function(){
 });
 
 
-
-const outstandingExcelBtn=document.getElementById("excel-file-input-outstanding")
 const fileNameDisplayAsset=document.getElementById('file-name-display-asset');
-
-outstandingExcelBtn.addEventListener(("change"),function(){
+$("#excel-file-input-outstanding").on(("change"),function(){
 
     const files = event.target.files;
     if (files.length > 0) {
@@ -527,9 +694,7 @@ outstandingExcelBtn.addEventListener(("change"),function(){
 
 let icodesRan=[]
 
-const generateReportButton =document.getElementById("process_files")
-
-generateReportButton.addEventListener("click", async function() {
+$("#process_files").on("click", async function() {
     generateReport()
 });
 
@@ -572,8 +737,6 @@ $("input[name='choice-multi']").on("click",function(){
 
 });
 
-
-let multfiledata={}
 
 $("#excel-file-input-multi").on("change",function(){
 
@@ -709,7 +872,7 @@ $("#excel-file-input-outstanding-multi").on("change",function(){
 });
 
 
-$("#process_files_multi").on("click",function(){
+$("#process_files_multi").on("click",async function(){
     generateReport()
 });
 
