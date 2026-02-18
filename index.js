@@ -115,6 +115,10 @@ async function generateReport(){
         pattern: 'solid',
         fgColor: { argb: 'FF999999' }
     }
+    formatRowExcel.font={
+        bold:true,
+        size:10
+    }
     
 
     essentialString=
@@ -145,6 +149,11 @@ async function generateReport(){
         fgColor: { argb: 'b4cdcd' }
     }
 
+    essentialRowExcel.font={
+        bold:true,
+        size:10
+    }
+
     keyRowString=
     `KEY CHART: 
     COFFEE TABLE BOOKS- $65, COOKBOOKS- $45, KIDS BOOKS- $35, PROP BOOKS $26.99  - FLORALS: XL LARGE $24.99EA LARGE $18.99EA MED. $12.99EA SM $8.99EA CUT STEM $5.99EA BATHROOM: (1) BATH TOWEL $15EA (1) HAND TOWEL $10 WASHCLOTH $5EA 
@@ -168,6 +177,10 @@ async function generateReport(){
         type: 'pattern',
         pattern: 'solid',
         fgColor: { argb: 'b4cdcd' }
+    }
+
+    keyRowExcel.font={
+        bold:true
     }
 
         customRow=[
@@ -210,6 +223,10 @@ async function generateReport(){
         }
 
     });
+
+    colorCodedRow.font={
+        bold:true
+    }
 
     blankspacefive=["","","","",""]
 
@@ -291,6 +308,7 @@ async function generateReport(){
     row7=worksheet.getRow(7)
     row7.alignment = { horizontal: 'left', vertical: 'bottom',wrapText: true}
     row7.height=37.5;
+
     worksheet.mergeCells('A7:L7')
 
     row8=worksheet.getRow(8)
@@ -300,7 +318,7 @@ async function generateReport(){
 
     row9=worksheet.getRow(9)
     row9.alignment = { horizontal: 'left', vertical: 'bottom',wrapText: true}
-    row9.height=237;
+    row9.height=250;
     worksheet.mergeCells('A9:L9')
 
 
@@ -347,11 +365,11 @@ async function generateReport(){
         if (manufacturer != undefined){
             manufacturer=manufacturer.toUpperCase()
             if (manufacturer == "IMG") {
-                manufacturer = "IMG ART LOFT:";
+                manufacturer = "IMG ART LOFT";
             } else if (manufacturer == "CUSTOM IMG") {
                 manufacturer = "IMG CUSTOM";
             } else if ( manufacturer.length > 0 && manufacturer.length <= 3) {
-                manufacturer = "IMG HOME EXCLUSIVE:";
+                manufacturer = "IMG HOME EXCLUSIVE";
             }
         }
         else{
@@ -600,7 +618,7 @@ $("#excel-file-input").on(("change"),function(){
                 
             icode=item["ICode"]
             discription=item["Description"]
-            unitCost=item["UnitCost"]
+            unitCost=item["UnitValue"]
             manufacturer=item["Manufacturer"]
 
             if (addedCodes.indexOf(icode) == -1 && icode != undefined){
