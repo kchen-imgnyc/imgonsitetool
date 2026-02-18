@@ -307,7 +307,7 @@ async function generateReport(){
 
     row7=worksheet.getRow(7)
     row7.alignment = { horizontal: 'left', vertical: 'bottom',wrapText: true}
-    row7.height=37.5;
+    row7.height=40;
 
     worksheet.mergeCells('A7:L7')
 
