@@ -348,11 +348,13 @@ async function generateReport(){
         let imageID = "";
         let qty = 0;
 
-        if (icode != undefined && extraData == undefined){
+        if ((icode !== undefined && icode !=="") && extraData == undefined){
+             // console.log("skip1 icode:" + icode + "Description:" + description)
             continue
         }
 
-        if(icode !== undefined && icodesRan.indexOf(icode) !== -1){
+        if( (icode !== undefined && icode !=="") && icodesRan.indexOf(icode) !== -1){
+            //console.log(" skip 2 icode:" + icode + "Description:" + description)
             continue
         }
 
@@ -393,8 +395,8 @@ async function generateReport(){
             "" 
         ];
 
-
-        if (icode == undefined) {
+        if (icode == undefined || icode == "") {
+            console.log("icode:" + icode + "Description:" + description)
             let borderRow=worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 1
             borderRow.eachCell({ includeEmpty: true }, (cell) => {
                 cell.border = {
@@ -422,9 +424,10 @@ async function generateReport(){
         // Add the row
         let newRow = worksheet.addRow(newRowValues);
 
-        if (icode == undefined){
+        if (icode == undefined || icode==""){
             newRow.font={
             bold: true,
+            size:9,
             }
         }
         else{
@@ -437,7 +440,7 @@ async function generateReport(){
         row_num = row_num + 1
 
         // Set formulas in ExcelJS *after* adding the row, using the cell object
-        if (icode != undefined) {
+        if (icode !== undefined && icode !== "") {
 
             estimateFormula = `C${newRow.number}*E${newRow.number}`;
             totalFormula = `C${newRow.number}*G${newRow.number}`;
@@ -625,7 +628,7 @@ $("#excel-file-input").on(("change"),function(){
                 allData.push([icode,discription,unitCost,manufacturer])
                 addedCodes.push(icode)
             }
-            else if( icode == undefined){
+            else if( icode == undefined || icode == ""){
                 allData.push([icode,discription,unitCost,manufacturer])
                 addedCodes.push(icode)
             }
