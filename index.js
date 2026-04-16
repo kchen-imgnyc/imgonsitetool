@@ -5,6 +5,9 @@ let locationTax=0.08875;
 let locationTaxString="NYC Sales Tax:";
 let completeInfo=new Map();
 
+let  categoryReplacements = new Map();
+categoryReplacements.set("LOUNGE CHAIR","ACCENT CHAIRS")
+
 
 async function generateReport(){
     icodesRan=[]
@@ -349,6 +352,7 @@ async function generateReport(){
         let category = "";
         let imageID = "";
         let qty = 0;
+        let purchasecost=0;
 
         if ((icode !== undefined && icode !=="") && extraData == undefined){
              // console.log("skip1 icode:" + icode + "Description:" + description)
@@ -384,11 +388,15 @@ async function generateReport(){
             category = extraData["category"];
             imageID = extraData["imageID"];
             qty = extraData["qty"];
+            purchasecost= extraData["purchasecost"]
+            unitCost=parseFloat(purchasecost)
         }
         
         if (imageID != undefined) {
             imageLink = `IMAGE("https://imgnyc.rentalworks.cloud/api/v1/appimage/getimage?appimageid=${String(imageID)}&thumbnail=false",4,50,50)`;
         }
+
+        
 
         let newRowValues = [
             icode,imageLink, qty, category, unitCost, estimateFormula, unitCost, 
@@ -638,11 +646,15 @@ async function generateReport(){
             if (cell.col===1){
                 cell.numFmt = '@'
             }
+            if(cell.col===5 || cell.col===7){
+                cell.numFmt ='$#,##0.00';
+            }
+
 
             if (cell.col === 4) {
                     cell.alignment = {
                         horizontal: 'left',
-                    };
+                };
             }
     });
     }
@@ -675,7 +687,7 @@ async function generateReport(){
         row.eachCell((cell, colNumber) => {
             // Check if the cell contains a formula object
             if (cell.value && typeof cell.value === 'object' && cell.value.formula) {
-                console.log(`Found formula in ${cell.address}: ${cell.value.formula}`);
+                //console.log(`Found formula in ${cell.address}: ${cell.value.formula}`);
                 let currentCol=cell.col
                 const oldFormula = cell.formula || cell.value.formula;
                 
@@ -977,6 +989,7 @@ $("#excel-file-input-outstanding").on(("change"),function(){
             qty=item["Quantity"]
             description=item["Description"]
             category=item["Category"]
+            purchasecost=item["PurchaseAmount"]
 
             dataObj={
                 "icode":icode,
@@ -985,6 +998,8 @@ $("#excel-file-input-outstanding").on(("change"),function(){
                 "qty":qty,
                 "description":description,
                 "category":category,
+                "purchasecost":purchasecost,
+
             }
             
             if (outstandingData.has(icode)){
@@ -1150,22 +1165,33 @@ $("#excel-file-input-outstanding-multi").on("change",function(){
         const worksheet = workbook.Sheets[firstSheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
         for(let i=0;i<json.length;i++){
-            item=json[i]
+           item=json[i]
+            // console.log(item)
             icode=item["ICode"]
             category=item["Category"]
             imageID=item["ImageId"]
             qty=item["Quantity"]
+            description=item["Description"]
+            category=item["Category"]
+            purchasecost=parseFloat(item["PurchaseAmount"])
 
             dataObj={
                 "icode":icode,
                 "category":category,
                 "imageID":imageID,
-                "qty":qty
+                "qty":qty,
+                "description":description,
+                "category":category,
+                "purchasecost":purchasecost,
+
             }
             
             if (outstandingData.has(icode)){
                 value=outstandingData.get(icode)
                 value["qty"]=value["qty"] +1
+                if (parseFloat(value["purchasecost"])<parseFloat(item["purchasecost"])){
+                    value["purchasecost"]=parseFloat(item["purchasecost"])
+                }
                 outstandingData.set(icode,value)
             }
             else{
