@@ -1,8 +1,9 @@
 let outstandingData=new Map();
 let allData=[];
 let locationChoice="NYC";
-let locationTax=0.08875
-let locationTaxString="NYC Sales Tax:"
+let locationTax=0.08875;
+let locationTaxString="NYC Sales Tax:";
+let completeInfo=new Map();
 
 
 async function generateReport(){
@@ -332,9 +333,10 @@ async function generateReport(){
 
 
 
-
+    let accessoryspacecount=0;
 
     let row_num =10; 
+    let rows_to_delete=[]
     for (let i = 0; i < allData.length; i++) {
 
         let row = allData[i];
@@ -388,7 +390,6 @@ async function generateReport(){
             imageLink = `IMAGE("https://imgnyc.rentalworks.cloud/api/v1/appimage/getimage?appimageid=${String(imageID)}&thumbnail=false",4,50,50)`;
         }
 
-
         let newRowValues = [
             icode,imageLink, qty, category, unitCost, estimateFormula, unitCost, 
             totalFormula, unitCost, `${manufacturer}: ${description}`, "", 
@@ -396,6 +397,47 @@ async function generateReport(){
         ];
 
         if (icode == undefined || icode == "") {
+            if (accessoryspacecount !== 0){
+                accessoryRow=["", "", "", "DRAPERIES/SHEERS", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "CURTAIN HARDWARE", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "BOOKS", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "PILLOWS/THROWS", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "FAUX PLANT", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "FLORALS", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "ACCESSORIES A (RETAIL)", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "ACCESSORIES B (WHOLESALE)", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "ACCESSORIES C (IMG HOME)", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+
+            }
+
+
             console.log("icode:" + icode + "Description:" + description)
             let borderRow=worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 1
             borderRow.eachCell({ includeEmpty: true }, (cell) => {
@@ -413,12 +455,67 @@ async function generateReport(){
             worksheet.getRow(row_num+2).height=10
 
             row_num = row_num + 2
+            accessoryspacecount=accessoryspacecount+1
         }
 
 
         // Handle missing ImageID
         if (imageID == undefined || imageID == "") {
             newRowValues[1] = "";
+        }
+
+
+  
+        if (completeInfo.has(icode)){
+
+            icodeArray=completeInfo.get(icode)            
+            combinediCodes=String(icode)
+            combinedDescription=description
+            completeCheck=true
+
+            for(let i=0;i<icodeArray.length;i++){
+                combinediCodes= combinediCodes + " , " + icodeArray[i]
+                completeOutData= outstandingData.get(icodeArray[i].replace(/\s+/g, ''))
+                if (completeOutData == undefined){
+                    completeCheck=false
+                    break
+                }
+
+                combinedDescription= combinedDescription + " " + completeOutData["description"]
+            }
+  
+
+
+            let completeRowValues = [
+            combinediCodes,imageLink, qty, category, unitCost, estimateFormula, unitCost, 
+            totalFormula, unitCost, `${manufacturer}: ${combinedDescription}`, "", 
+            "" 
+            ];
+            let completeRow=worksheet.addRow(completeRowValues)
+            row_num = row_num + 1
+
+            rows_to_delete.push(combinediCodes.split(" , "))
+
+            console.log("rows to delete")
+            console.log(rows_to_delete)
+            
+            estimateFormula = `C${completeRow.number}*E${completeRow.number}`;
+            totalFormula = `C${completeRow.number}*G${completeRow.number}`;
+
+            // Apply formula to ESTIMATE TOTAL (Column E, index 4)
+            completeRow.getCell(6).value = { formula: estimateFormula }; 
+            
+            // Apply formula to TOTAL (Column G, index 6)
+            completeRow.getCell(8).value = { formula: totalFormula }; 
+            
+            // Apply image formula to IMAGE (Column K, index 10)
+            if (imageID != undefined) {
+                completeRow.getCell(2).value = { formula: imageLink };
+                completeRow.height=37.5 //50px
+            }
+
+
+            
         }
         
         // Add the row
@@ -455,7 +552,7 @@ async function generateReport(){
             // Apply image formula to IMAGE (Column K, index 10)
             if (imageID != undefined) {
                newRow.getCell(2).value = { formula: imageLink };
-                //    newRow.height = 112.5; // 150px is approx 112.5 points in Excel
+                // newRow.height = 112.5; // 150px is approx 112.5 points in Excel
                 // newRow.height=75 //100px
                 //newRow.height=56.25 //75px
                 newRow.height=37.5 //50px
@@ -464,13 +561,145 @@ async function generateReport(){
         }
     }
 
+    //
+    
+        if (accessoryspacecount !== 0){
+                accessoryRow=["", "", "", "DRAPERIES/SHEERS", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "CURTAIN HARDWARE", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "BOOKS", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "PILLOWS/THROWS", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "FAUX PLANT", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "FLORALS", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "ACCESSORIES A (RETAIL)", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "ACCESSORIES B (WHOLESALE)", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+                accessoryRow=["", "", "", "ACCESSORIES C (IMG HOME)", "", "", "", "", "", "", "", ""]
+                worksheet.addRow(accessoryRow)
+                row_num=row_num+1
+
+            
+        }
+
+    //
+
     worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 1
     worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]); // Blank space 2
-    row_num = row_num + 2    
+    row_num = row_num + 2   
+    
+    console.log("rows to delete")
+    console.log(rows_to_delete)
+    
+    //
 
-    //`B${row_num}*D${row_num}`
+    startRowIndex=11
+    worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber >= startRowIndex) {
+                // Iterate through each cell in the current row
+            row.eachCell(cell => {
 
-        ThirdLastRow=[
+            const isBold = cell.font?.bold === true;
+            if (isBold){
+                cell.font = {
+                name: 'Montserrat', 
+                size: 9,
+                bold:true
+                };
+            }
+            else{
+                cell.font = {
+                name: 'Montserrat',
+                size: 9,
+                };
+            }
+
+            if (cell.col===1){
+                cell.numFmt = '@'
+            }
+
+            if (cell.col === 4) {
+                    cell.alignment = {
+                        horizontal: 'left',
+                    };
+            }
+    });
+    }
+    });
+
+    //
+
+        for(let i=0; i<rows_to_delete.length;i++){
+
+            complete_icodes=rows_to_delete[i]
+            for(let j=0;j<complete_icodes.length;j++){
+                const targetValue = complete_icodes[j].trim();
+                console.log("targetValue: "+targetValue)
+                const columnNumber = 1; 
+                for (let i = worksheet.rowCount; i >= 1; i--) {
+                    const row = worksheet.getRow(i);
+                    const cellValue = row.getCell(columnNumber).value;
+
+                    if (cellValue === targetValue) {
+                        worksheet.spliceRows(i, 1); 
+                    }
+                }
+
+            }
+
+        }
+
+        //recaculate values
+        worksheet.eachRow((row, rowNumber) => {
+        row.eachCell((cell, colNumber) => {
+            // Check if the cell contains a formula object
+            if (cell.value && typeof cell.value === 'object' && cell.value.formula) {
+                console.log(`Found formula in ${cell.address}: ${cell.value.formula}`);
+                let currentCol=cell.col
+                const oldFormula = cell.formula || cell.value.formula;
+                
+                // "ESTIMATE TOTAL" = 6 "F" TOTAL= 8 "H"'
+
+                if (currentCol === 6){
+                    cell.value = {
+                    formula: `C${rowNumber} * E${rowNumber}`, // Example logic
+                    result: undefined // Optional: cleared so Excel recalculates on open
+                    };
+                }
+
+                else if(currentCol === 8){
+                    cell.value = {
+                    formula: `C${rowNumber} * G${rowNumber}`, // Example logic
+                    result: undefined // Optional: cleared so Excel recalculates on open
+                    };
+                }
+            }
+        });
+    });
+
+
+            ThirdLastRow=[
                     "",
                     "",
                     "",
@@ -490,6 +719,8 @@ async function generateReport(){
         newRow.getCell(6).value = { formula: `SUM(F1:F${newRow.number-1})` }
         newRow.getCell(8).value ={ formula: `SUM(H1:H${newRow.number-1})` }
         newRow.getCell(9).value ={ formula: `SUM(I1:I${newRow.number-1})` }
+
+        finalRowStart=newRow.number
 
         row_num =row_num +1
 
@@ -535,13 +766,45 @@ async function generateReport(){
         newRow.getCell(8).value ={ formula: `H${newRow.number-2}+H${newRow.number-1}` }
         newRow.getCell(9).value ={ formula: `I${newRow.number-2}+I${newRow.number-1}` }
 
+        count=0
+        worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber >= finalRowStart) {
+            if (count<2){
+                row.eachCell(cell => {
+                    cell.font = {
+                        name: 'Montserrat', 
+                        size: 10,
+                        bold:true,
+                    };
+                    if (cell.col === 5) {
+                            cell.alignment = {
+                                horizontal: 'left',
+                            };
+                    }
 
-    
+                });
 
+            }
+            else{
+                row.eachCell(cell => {
+                    cell.font = {
+                        name: 'Montserrat', 
+                        size: 12,
+                        bold:true,
+                    };
+                    if (cell.col === 5) {
+                            cell.alignment = {
+                                horizontal: 'left',
+                            };
+                    }
+                });
 
-    
-    
+            }
 
+            count=count+1
+
+        }
+        });
 
 
 
@@ -572,6 +835,40 @@ async function generateReport(){
 };
 
 document.addEventListener("DOMContentLoaded", function() {
+
+const spreadsheetId = '1e7Af1VembRIo_thWtIMV4O3G-F48L0FnoXKL12gwJ9g';
+const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json`;
+
+
+fetch(url)
+        .then(res => res.text())
+        .then(text => {
+            // Extract JSON from the Google Visualization API wrapper
+            const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+            const json = JSON.parse(jsonString);
+            const rows = json.table.rows;
+
+            rows.forEach(row => {
+                const cellA = row.c[0];
+                const cellB = row.c[1];
+                const icode = cellA.f || cellA.v;
+                const completeList=cellB["v"].split(",")
+                // console.log(completeList)
+                // console.log("Processing row: " + icode +" , " + completeList );
+                
+                if(icode !=="iCodeComplete"){
+                    first=completeList.shift()
+                    if(completeList.length!==0){
+                        completeInfo.set(first,completeList)
+                    }
+                  
+                }
+                
+            });
+            console.log(completeInfo)
+            })
+        .catch(err => console.error("Fetch failed:", err));
+
 
 
 $("label[for='switch_to_single']").on("click",function(){
@@ -673,17 +970,21 @@ $("#excel-file-input-outstanding").on(("change"),function(){
 
         for(let i=0;i<json.length;i++){
             item=json[i]
-
+            // console.log(item)
             icode=item["ICode"]
             category=item["Category"]
             imageID=item["ImageId"]
             qty=item["Quantity"]
+            description=item["Description"]
+            category=item["Category"]
 
             dataObj={
                 "icode":icode,
                 "category":category,
                 "imageID":imageID,
-                "qty":qty
+                "qty":qty,
+                "description":description,
+                "category":category,
             }
             
             if (outstandingData.has(icode)){
