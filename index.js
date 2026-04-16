@@ -5,8 +5,16 @@ let locationTax=0.08875;
 let locationTaxString="NYC Sales Tax:";
 let completeInfo=new Map();
 
-let  categoryReplacements = new Map();
+let categoryReplacements = new Map();
 categoryReplacements.set("LOUNGE CHAIR","ACCENT CHAIRS")
+categoryReplacements.set("RUG","AREA RUG")
+categoryReplacements.set("PAD","RUG PAD")
+categoryReplacements.set("CHANDELIER","LIGHT FIXTURE")
+categoryReplacements.set("SHELVES","FLOATING SHELVES")
+categoryReplacements.set("BOOKSHELF","BOOKCASES")
+categoryReplacements.set("CUSTOM IMG","IMG CUSTOM")
+categoryReplacements.set("IMG ART","ARTWORK")
+
 
 
 async function generateReport(){
@@ -400,6 +408,10 @@ async function generateReport(){
             imageLink = `IMAGE("https://imgnyc.rentalworks.cloud/api/v1/appimage/getimage?appimageid=${String(imageID)}&thumbnail=false",4,50,50)`;
         }
 
+
+        if(categoryReplacements.has(category)){
+            category=categoryReplacements.get(category)
+        }
         
 
         let newRowValues = [
@@ -658,6 +670,7 @@ async function generateReport(){
             if (cell.col === 4) {
                     cell.alignment = {
                         horizontal: 'left',
+                        vertical: "middle",
                 };
             }
     });
