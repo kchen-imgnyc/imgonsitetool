@@ -389,7 +389,11 @@ async function generateReport(){
             imageID = extraData["imageID"];
             qty = extraData["qty"];
             purchasecost= extraData["purchasecost"]
-            unitCost=parseFloat(purchasecost)
+
+            if(parseFloat(unitCost)<parseFloat(purchasecost)){
+                unitCost=parseFloat(purchasecost)
+            }
+            
         }
         
         if (imageID != undefined) {
