@@ -2,7 +2,7 @@ let outstandingData=new Map();
 let allData=[];
 let locationChoice="NYC";
 let locationTax=0.08875;
-let locationTaxString="NYC Sales Tax:";
+let locationTaxString="NYC SALES TAX:";
 let completeInfo=new Map();
 
 let categoryReplacements = new Map();
@@ -732,8 +732,8 @@ async function generateReport(){
                     "",
                     "",
                     "",
+                    "SUBTOTAL:", 
                     "", 
-                    "SubTotal:", 
                     ``, 
                     "", 
                     ``, 
@@ -757,8 +757,8 @@ async function generateReport(){
                     "",
                     "",
                     "",
-                    "", 
                     locationTaxString, 
+                    "", 
                     ``, 
                     "", 
                     ``, 
@@ -779,8 +779,8 @@ async function generateReport(){
                     "",
                     "",
                     "",
-                    "",
-                    "Total:", 
+                    "TOTAL:",
+                    "", 
                     ``, 
                     "",
                     ``, 
@@ -836,7 +836,34 @@ async function generateReport(){
         });
 
 
+        condtionSpace1=worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]);
+        condtionSpace2=worksheet.addRow(["", "", "", "", "", "", "", "", "", "", "", ""]);
 
+        condtionSpace1.height=10;
+        condtionSpace2.height=10;
+
+        condtionRow=[
+                    "",
+                    "All pricing herein accounts for staging condition furnishings",
+                    "",
+                    "",
+                    "", 
+                    ``, 
+                    "",
+                    ``, 
+                    ``, 
+                    "", 
+                    "", 
+                    "", 
+        
+        ]
+
+        condtionRowInfo=worksheet.addRow(condtionRow);
+        condtionRowInfo.height=31.5;
+        condtionRowInfo.font={
+            italic: true
+        }
+        worksheet.mergeCells('B'+condtionRowInfo.number + ':L' + condtionRowInfo.number);
 
 
 
@@ -1060,13 +1087,13 @@ $("input[name='choice']").on("click",function(){
     if (locationChoice === "NYC"){
         locationChoice="NYC";
         locationTax=0.08875
-        locationTaxString="NYC Sales Tax:"
+        locationTaxString="NYC SALES TAX:"
         $("#option1-multi").prop("checked",true)
     }
     else if (locationChoice === "FL"){
         locationChoice="FL";
         locationTax=0.07
-        locationTaxString="FL Sales Tax:"
+        locationTaxString="FL SALES TAX:"
         $("#option2-multi").prop("checked",true)
     }
 
@@ -1079,13 +1106,13 @@ $("input[name='choice-multi']").on("click",function(){
     if (locationChoice === "NYC"){
         locationChoice="NYC";
         locationTax=0.08875
-        locationTaxString="NYC Sales Tax:"
+        locationTaxString="NYC SALES TAX:"
         $("#option1").prop("checked",true)
     }
     else if (locationChoice === "FL"){
         locationChoice="FL";
         locationTax=0.07
-        locationTaxString="FL Sales Tax:"
+        locationTaxString="FL SALES TAX:"
         $("#option2").prop("checked",true)
     }
 
