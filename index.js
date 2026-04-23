@@ -415,8 +415,8 @@ async function generateReport(){
         
 
         let newRowValues = [
-            icode,imageLink, qty, category, unitCost, estimateFormula, unitCost, 
-            totalFormula, unitCost, `${manufacturer}: ${description}`, "", 
+            icode,imageLink, qty, category, unitCost, estimateFormula, 0.0, 
+            totalFormula, 0.0, `${manufacturer}: ${description}`, "", 
             "" 
         ];
 
@@ -511,8 +511,8 @@ async function generateReport(){
 
 
             let completeRowValues = [
-            combinediCodes,imageLink, qty, category, unitCost, estimateFormula, unitCost, 
-            totalFormula, unitCost, `${manufacturer}: ${combinedDescription}`, "", 
+            combinediCodes,imageLink, qty, category, unitCost, estimateFormula, 0.0, 
+            totalFormula, 0.0, `${manufacturer}: ${combinedDescription}`, "", 
             "" 
             ];
             let completeRow=worksheet.addRow(completeRowValues)
@@ -1149,17 +1149,17 @@ $("#excel-file-input-multi").on("change",function(){
 
             for(let i=0;i<json.length;i++){
                 item=json[i]
-
+                    
                 icode=item["ICode"]
                 discription=item["Description"]
-                unitCost=item["UnitCost"]
+                unitCost=item["UnitValue"]
                 manufacturer=item["Manufacturer"]
 
                 if (addedCodes.indexOf(icode) == -1 && icode != undefined){
                     allData.push([icode,discription,unitCost,manufacturer])
                     addedCodes.push(icode)
                 }
-                else if( icode == undefined){
+                else if( icode == undefined || icode == ""){
                     allData.push([icode,discription,unitCost,manufacturer])
                     addedCodes.push(icode)
                 }
